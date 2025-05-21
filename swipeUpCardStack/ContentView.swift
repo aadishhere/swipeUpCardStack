@@ -10,33 +10,94 @@ import SwiftUI
 struct ContentView: View {
     @State private var index = 0
 
-    let titles = ["First Card", "Second Card", "Third Card"]
-    let subtitles = ["Swipe up", "Keep Swiping", "Last Screen"]
-    let colors: [Color] = [.red.opacity(0.3), .blue.opacity(0.3), .orange.opacity(0.3)]
-
     var body: some View {
         ZStack {
-            VStack(spacing: 16) {
-                Spacer()
-                Text(titles[index])
-                    .font(.largeTitle.bold())
-                Text(subtitles[index])
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Spacer()
+            if index == 0 {
+                FirstView()
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .top)))
+                    .id(index)
+            } else if index == 1 {
+                SecondView()
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .top)))
+                    .id(index)
+            } else if index == 2 {
+                ThirdView()
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .top)))
+                    .id(index)
+            } else if index == 3 {
+                FourthView()
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .top)))
+                    .id(index)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(colors[index])
-            .gesture(
-                DragGesture()
-                    .onEnded { value in
-                        if value.translation.height < -50 {
-                            index = (index + 1) % 3
+        }
+        .animation(.easeInOut, value: index)
+        .ignoresSafeArea()
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    if value.translation.height < -50 {
+                        withAnimation {
+                            index = (index + 1) % 4
+                        }
+                    } else if value.translation.height > 50 {
+                        withAnimation {
+                            index = (index - 1 + 4) % 4
                         }
                     }
-            )
+                }
+        )
+    }
+}
+
+struct FirstView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            Text("First Card")
+                .font(.largeTitle.bold())
+            Spacer()
         }
-        .ignoresSafeArea()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.red.opacity(0.3))
+    }
+}
+
+struct SecondView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            Text("Second Card")
+                .font(.largeTitle.bold())
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.blue.opacity(0.3))
+    }
+}
+
+struct ThirdView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            Text("Third Card")
+                .font(.largeTitle.bold())
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.orange.opacity(0.3))
+    }
+}
+
+struct FourthView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            Text("Fourth Card")
+                .font(.largeTitle.bold())
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.green.opacity(0.3))
     }
 }
 
